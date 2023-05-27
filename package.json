@@ -5,7 +5,7 @@
     "main": "src/index.ts",
     "scripts": {
         "build": "tsc",
-        "start": "cls && node build/index.js"
+        "start": "node build/index.js"
     },
     "keywords": [],
     "author": "danielnaoexiste <contact@dangazzaneo.dev>",
