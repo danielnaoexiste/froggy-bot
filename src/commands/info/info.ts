@@ -6,6 +6,7 @@ import {
   getUserInfoEmbed,
   getServerInfoEmbed
 } from '../../embeds/info'
+import { Categories } from '../../util'
 
 const command: SlashCommand = {
   command: new SlashCommandBuilder()
@@ -47,7 +48,8 @@ const command: SlashCommand = {
       }
     }
   },
-  cooldown: 10
+  cooldown: 10,
+  category: Categories.INFO
 }
 
 export default command

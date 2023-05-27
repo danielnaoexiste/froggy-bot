@@ -1,14 +1,15 @@
-import { Interaction, InteractionType } from 'discord.js'
+import { Client, Events, Interaction, InteractionType } from 'discord.js'
 
 import { BotEvent } from '../types'
 
 const event: BotEvent = {
-  name: 'interactionCreate',
-  execute: async (interaction: Interaction) => {
-    if (interaction.type === InteractionType.ApplicationCommand) {
-      let command = interaction.client.commands.get(interaction.commandName)
+  name: Events.InteractionCreate,
 
-      let cooldown = interaction.client.cooldowns.get(
+  execute: async (client: Client, interaction: Interaction) => {
+    if (interaction.type === InteractionType.ApplicationCommand) {
+      const command = interaction.client.commands.get(interaction.commandName)
+
+      const cooldown = interaction.client.cooldowns.get(
         `${interaction.commandName}-${interaction.user.username}`
       )
 
@@ -16,14 +17,12 @@ const event: BotEvent = {
 
       if (command.cooldown && cooldown) {
         if (Date.now() < cooldown) {
-          interaction.reply({
+          return interaction.reply({
             content: `You have to wait ${Math.floor(
               Math.abs(Date.now() - cooldown) / 1000
             )} second(s) to use this command again.`,
             ephemeral: true
           })
-          setTimeout(() => interaction.deleteReply(), 5000)
-          return
         }
 
         interaction.client.cooldowns.set(
@@ -44,7 +43,7 @@ const event: BotEvent = {
       }
 
       try {
-        command.execute(interaction)
+        command.execute(interaction, client)
       } catch (error) {
         console.error(error)
         await interaction.reply({

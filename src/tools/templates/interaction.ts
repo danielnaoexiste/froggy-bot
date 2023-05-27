@@ -4,8 +4,7 @@ export default (i: IAnime) => `
 import { SlashCommandBuilder } from 'discord.js'
 import { SlashCommand } from '../../types'
 import { getAnimeEmbed } from '../../embeds/anime'
-
-const endpoint = 'https://api.otakugifs.xyz/gif?format=gif&reaction='
+import { Categories } from '../../util'
 
 const command: SlashCommand = {
   command: new SlashCommandBuilder()
@@ -24,14 +23,17 @@ const command: SlashCommand = {
     const target = interaction.options.get('target')!.value
     const actionDescription = "${i.desc}"
      
-    const gif = await fetch(\`\${endpoint}${i.name}\`).then(res => res.json())
+    const gif = await fetch(\`\${process.env.OTAKU_GIFS}${
+      i.name
+    }\`).then(res => res.json())
     const description = \`<@\${interaction.user.id}> \${actionDescription} <@\${target}>!\`
         
     const animeEmbed = await getAnimeEmbed(interaction, description, gif.url)
         
     interaction.reply({ embeds: [animeEmbed] })
   },
-  cooldown: 10
+  cooldown: 10,
+  category: Categories.INTERACTION
 }
 
 export default command

@@ -10,10 +10,10 @@ import { SlashCommand } from '../types'
 module.exports = (client: Client) => {
   const commands: SlashCommandBuilder[] = []
 
-  let commandsDir = join(__dirname, '../commands/**/*.js')
+  const commandsDir = join(__dirname, '../commands/**/*.js')
 
   globSync(commandsDir.replace(/\\/g, '/')).forEach(file => {
-    let command: SlashCommand = require(resolve(file)).default
+    const command: SlashCommand = require(resolve(file)).default
     commands.push(command.command)
     client.commands.set(command.command.name, command)
   })

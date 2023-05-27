@@ -1,10 +1,11 @@
-import { Client } from 'discord.js'
+import { Client, Events } from 'discord.js'
 import { BotEvent } from '../types'
 import { color } from '../util'
 
 const event: BotEvent = {
-  name: 'ready',
+  name: Events.ClientReady,
   once: true,
+
   execute: (client: Client) => {
     console.log(
       color('white', `💪 Logged in as ${color('pink', client.user?.tag)}`)

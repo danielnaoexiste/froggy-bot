@@ -3,18 +3,15 @@ import { config } from 'dotenv'
 import { readdirSync } from 'fs'
 import { join } from 'path'
 
-import { SlashCommand } from './types'
+import { IGuildConfig, SlashCommand } from './types'
 
 config()
 
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
-    GatewayIntentBits.GuildInvites,
     GatewayIntentBits.GuildMembers,
-    GatewayIntentBits.GuildPresences,
     GatewayIntentBits.GuildMessages,
-    GatewayIntentBits.GuildVoiceStates,
     GatewayIntentBits.GuildMessageReactions
   ],
   presence: {
@@ -29,6 +26,7 @@ const client = new Client({
 })
 
 client.commands = new Collection<string, SlashCommand>()
+client.configs = new Collection<string, IGuildConfig>()
 client.cooldowns = new Collection<string, number>()
 
 const handlersDir = join(__dirname, './handlers')

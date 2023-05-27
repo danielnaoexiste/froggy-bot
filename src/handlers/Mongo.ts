@@ -1,8 +1,10 @@
 import mongoose from 'mongoose'
 
+import { Client } from 'discord.js'
 import { color } from '../util'
+import GuildConfigModel from '../schemas/GuildConfig'
 
-module.exports = () => {
+module.exports = (client: Client) => {
   const MONGO_URI = process.env.MONGO_URI
   if (!MONGO_URI)
     return console.log(
@@ -13,14 +15,17 @@ module.exports = () => {
 
   mongoose
     .connect(`${MONGO_URI}`)
-    .then(() =>
+    .then(async () => {
+      const configs = await GuildConfigModel.find()
+      configs.forEach(config => client.configs.set(config.guild_id, config))
+
       console.log(
         color(
           'white',
           `🍃 MongoDB connection has been ${color('blue', 'established.')}`
         )
       )
-    )
+    })
     .catch(() =>
       console.log(
         color(

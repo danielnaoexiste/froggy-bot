@@ -5,6 +5,7 @@ import {
 } from 'discord.js'
 
 import { SlashCommand } from '../../types'
+import { Categories } from '../../util'
 
 const command: SlashCommand = {
   command: new SlashCommandBuilder()
@@ -23,7 +24,7 @@ const command: SlashCommand = {
   execute: async interaction => {
     if (interaction.channel?.type === ChannelType.DM) return
 
-    let messageCount = Number(interaction.options.get('messagecount')!.value)
+    const messageCount = Number(interaction.options.get('messagecount')!.value)
 
     const messages = await interaction.channel?.messages.fetch({
       limit: messageCount
@@ -44,7 +45,8 @@ const command: SlashCommand = {
           ephemeral: true
         })
   },
-  cooldown: 10
+  cooldown: 10,
+  category: Categories.ADM
 }
 
 export default command

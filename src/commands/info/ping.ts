@@ -1,6 +1,7 @@
 import { SlashCommandBuilder, EmbedBuilder, Colors } from 'discord.js'
 
 import { SlashCommand } from '../../types'
+import { Categories } from '../../util'
 
 const command: SlashCommand = {
   command: new SlashCommandBuilder()
@@ -13,7 +14,7 @@ const command: SlashCommand = {
     await interaction.reply({
       embeds: [
         new EmbedBuilder()
-          .setAuthor({ name: interaction.client.user?.username! })
+          .setAuthor({ name: interaction.client.user!.username })
           .setDescription(
             `🏓 Pong! API: \`${interaction.client.ws.ping}ms\` | Delay: \`${delay}ms\``
           )
@@ -21,7 +22,8 @@ const command: SlashCommand = {
       ]
     })
   },
-  cooldown: 10
+  cooldown: 10,
+  category: Categories.INFO
 }
 
 export default command

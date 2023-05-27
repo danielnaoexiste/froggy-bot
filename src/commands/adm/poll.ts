@@ -3,6 +3,7 @@ import { SlashCommandBuilder } from 'discord.js'
 
 import { SlashCommand } from '../../types'
 import { getPollQuestionEmbed, getPollResultEmbed } from '../../embeds/adm'
+import { Categories } from '../../util'
 
 const command: SlashCommand = {
   command: new SlashCommandBuilder()
@@ -29,11 +30,7 @@ const command: SlashCommand = {
       ? questionOption
       : `${questionOption}?`
 
-    const questionEmbed = await getPollQuestionEmbed(
-      interaction,
-      question,
-      timeout
-    )
+    const questionEmbed = getPollQuestionEmbed(interaction, question, timeout)
 
     await interaction.reply({ embeds: [questionEmbed] })
 
@@ -59,7 +56,8 @@ const command: SlashCommand = {
 
     return interaction.editReply({ embeds: [resultEmbed] })
   },
-  cooldown: 60
+  cooldown: 60,
+  category: Categories.ADM
 }
 
 export default command
