@@ -4,46 +4,39 @@ import {
   TextChannel
 } from 'discord.js'
 
-import dayjs from 'dayjs'
-import { SlashCommand } from '../../types'
-import { getPenaltyEmbed } from '../../embeds/adm'
-
-import GuildPenaltyModel from '../../schemas/GuildPenalty'
 import { Categories } from '../../util'
+import { SlashCommand } from '../../types'
+import { getWarnEmbed, getPenaltyEmbed } from '../../embeds/adm'
+
+import dayjs from 'dayjs'
+import GuildPenaltyModel from '../../schemas/GuildPenalty'
 
 const command: SlashCommand = {
   command: new SlashCommandBuilder()
-    .setName('ban')
-    .setDescription('Bans a member from the server.')
+    .setName('warn')
+    .setDescription('Warns a member from the server.')
     .addUserOption(option =>
       option
         .setName('target')
-        .setDescription('The user to ban.')
+        .setDescription('The user to warn.')
         .setRequired(true)
     )
     .addStringOption(option =>
       option
         .setName('reason')
-        .setDescription('Reason for banning this user.')
+        .setDescription('Reason for warning this user.')
         .setRequired(true)
     )
-    .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers),
+    .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers),
 
   execute: async (interaction, client) => {
-    const type = 'ban'
+    const type = 'warn'
     const target = interaction.options.getUser('target')
-    const member = await interaction.guild!.members.fetch(target!.id)
     const reason = interaction.options.get('reason')!.value as string
 
     if (!target)
       return interaction.reply({
-        content: 'Unable to find user',
-        ephemeral: true
-      })
-
-    if (!member.bannable || target!.id === interaction.client!.user.id)
-      return interaction.reply({
-        content: "I'm unable to ban this member",
+        content: 'Unable to find member.',
         ephemeral: true
       })
 
@@ -60,7 +53,6 @@ const command: SlashCommand = {
     })
 
     await penaltyData.save()
-    member.ban({ reason })
 
     if (channelId) {
       const penaltiesChannel = (await interaction.guild!.channels.fetch(
@@ -72,10 +64,20 @@ const command: SlashCommand = {
       await penaltiesChannel!.send({ embeds: [reportEmbed] })
     }
 
-    return interaction.reply({
-      content: `<@${target!.id}> banned successfully!`,
-      ephemeral: true
-    })
+    try {
+      const warnEmbed = getWarnEmbed(interaction, reason)
+      await target.send({ embeds: [warnEmbed] })
+
+      return interaction.reply({
+        content: `<@${target!.id}> warned successfully!`,
+        ephemeral: true
+      })
+    } catch {
+      interaction.reply({
+        content: `<@${target!.id}> DMs are disabled and could not be warned`,
+        ephemeral: true
+      })
+    }
   },
   cooldown: 10,
   category: Categories.ADM

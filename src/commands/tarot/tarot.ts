@@ -1,7 +1,7 @@
 import { SlashCommandBuilder } from 'discord.js'
 
 import { ITarotCard, SlashCommand } from '../../types'
-import { Categories } from '../../util'
+import { Categories, TarotCards } from '../../util'
 import { getTarotEmbed } from '../../embeds/tarot'
 
 const command: SlashCommand = {
@@ -10,13 +10,16 @@ const command: SlashCommand = {
     .setDescription('Draws a random tarot card!'),
 
   execute: async interaction => {
-    const card: ITarotCard = (
-      await fetch(`${process.env.TAROT_API}/random?n=1`).then(res => res.json())
-    ).cards[0]
+    await interaction.deferReply()
 
-    const tarotEmbed = await getTarotEmbed(interaction, card)
+    const cards = TarotCards as ITarotCard[]
 
-    await interaction.reply({
+    const randomCard = Math.floor(Math.random() * cards.length)
+    const selectedCard = cards[randomCard]
+
+    const tarotEmbed = await getTarotEmbed(interaction, selectedCard)
+
+    await interaction.editReply({
       embeds: [tarotEmbed]
     })
   },

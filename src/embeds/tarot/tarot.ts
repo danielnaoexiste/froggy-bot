@@ -6,19 +6,19 @@ export const getTarotEmbed = async (
   card: ITarotCard
 ) => {
   const dir: string[] = ['tn', 'rev']
-  const rand_dir = Math.floor(Math.random() * dir.length)
+  const randomDir = Math.floor(Math.random() * dir.length)
 
-  const image_url = `${process.env.TAROT_IMAGE}/${dir[rand_dir]}/${card.name_short}.jpg`
-  const image_hq = `${process.env.TAROT_IMAGE}/img/${card.name_short}.jpg`
+  const imageUrl = `${process.env.TAROT_IMAGE}/${dir[randomDir]}/${card.name_short}.jpg`
+  const imageHQ = `${process.env.TAROT_IMAGE}/img/${card.name_short}.jpg`
 
   const botName = process.env.BOT_NAME!
   const botIcon = interaction.client.user!.displayAvatarURL()
 
   return new EmbedBuilder()
-    .setColor(rand_dir === 0 ? Colors.DarkGreen : Colors.DarkRed)
-    .setAuthor({ name: card.name, url: image_hq, iconURL: image_hq })
-    .setDescription(rand_dir === 0 ? card.meaning_up : card.meaning_rev)
-    .setImage(image_url)
+    .setColor(randomDir === 0 ? Colors.DarkGreen : Colors.DarkRed)
+    .setAuthor({ name: card.name, url: imageHQ, iconURL: imageHQ })
+    .setDescription(randomDir === 0 ? card.meaning_up : card.meaning_rev)
+    .setImage(imageUrl)
     .setFooter({
       text: botName,
       iconURL: botIcon

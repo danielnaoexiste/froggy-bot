@@ -20,10 +20,11 @@ export const getPenaltyEmbed = (
     .setThumbnail(userIcon)
     .setColor(Colors.DarkRed)
     .setAuthor({
-      name: interaction.client.user!.username,
+      name: `${interaction.client.user!.username}`,
       url: process.env.BOT_SITE,
       iconURL: botIcon
     })
+    .setDescription(`A member has been penalized.`)
     .addFields(
       {
         name: 'Penalty Type',
