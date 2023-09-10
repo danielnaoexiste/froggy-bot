@@ -1,10 +1,4 @@
-import {
-  CacheType,
-  Colors,
-  CommandInteraction,
-  EmbedBuilder,
-  User
-} from 'discord.js'
+import { CacheType, Colors, CommandInteraction, EmbedBuilder } from 'discord.js'
 
 export const getWarnEmbed = (
   interaction: CommandInteraction<CacheType>,
