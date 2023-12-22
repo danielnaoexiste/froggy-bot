@@ -13,7 +13,6 @@ type TEmojis =
   | 'Moderation'
   | 'Configuration'
   | 'Information'
-  | 'Fun'
   | 'Interaction'
   | 'Reaction'
 
