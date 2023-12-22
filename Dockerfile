@@ -6,8 +6,8 @@ FROM node:${NODE_VERSION}-slim as base
 
 LABEL fly_launch_runtime="Node.js"
 
-
 RUN corepack enable
+
 # Node.js app lives here
 WORKDIR /app
 
