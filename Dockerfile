@@ -11,10 +11,6 @@ RUN corepack enable
 # Node.js app lives here
 WORKDIR /app
 
-# Set production environment
-ENV NODE_ENV=production
-
-
 # Throw-away build stage to reduce size of final image
 FROM base as build
 
