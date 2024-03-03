@@ -40,9 +40,11 @@ Create an application on the [Discord Developer Portal](https://discord.com/deve
 ### Installation
 
 1. Clone the repo
-   ```sh
-   git clone https://github.com/danielnaoexiste/froggy-bot.git
-   ```
+
+```sh
+git clone https://github.com/danielnaoexiste/froggy-bot.git
+```
+
 2. Rename `.env.example` to `.env`
 3. Enter your Discord App info on the `.env` file.
 4. Install NPM packages with `pnpm`
